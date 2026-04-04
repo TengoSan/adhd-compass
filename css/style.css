@@ -1,0 +1,714 @@
+/* ========================================
+   ADHDコンパス - スタイル
+   ダークモードデフォルト、ADHD配慮設計
+   ======================================== */
+
+/* リセットと基本設定 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* カラーパレット */
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: #0f3460;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0b0;
+  --text-muted: #6a6a7a;
+  --accent: #e94560;
+  --accent-soft: #533483;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #ef4444;
+  --bubble-blue: #3b82f6;
+  --bubble-yellow: #f59e0b;
+  --bubble-red: #ef4444;
+
+  /* サイズ */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --spacing: 16px;
+  --header-height: 56px;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* ========================================
+   画面遷移
+   ======================================== */
+.screen {
+  display: none;
+  padding: var(--spacing);
+  padding-bottom: 40px;
+  animation: fadeIn 0.25s ease;
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   ヘッダー
+   ======================================== */
+.app-header {
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  margin-bottom: 12px;
+}
+
+.screen-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ========================================
+   感情チェックイン
+   ======================================== */
+.mood-checkin {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.mood-question {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+
+.mood-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.mood-btn {
+  font-size: 2.2rem;
+  background: var(--bg-card);
+  border: 3px solid transparent;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--accent-soft);
+}
+
+.mood-btn:active {
+  transform: scale(0.95);
+}
+
+.mood-btn.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: scale(1.1);
+}
+
+.mood-result {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  min-height: 1.4em;
+  transition: opacity 0.3s;
+}
+
+/* ========================================
+   メインナビゲーション
+   ======================================== */
+.main-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.nav-card {
+  background: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-card:hover {
+  border-color: var(--accent-soft);
+  background: var(--bg-card);
+  transform: translateY(-2px);
+}
+
+.nav-card:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.nav-icon {
+  font-size: 2rem;
+  display: block;
+}
+
+.nav-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.nav-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ========================================
+   今日のサマリー
+   ======================================== */
+.today-summary {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.summary-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.summary-empty {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* ========================================
+   メモ画面
+   ======================================== */
+.memo-input-area {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.memo-input {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 2px solid var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.memo-input:focus {
+  border-color: var(--accent-soft);
+}
+
+.memo-input::placeholder {
+  color: var(--text-muted);
+}
+
+.memo-add-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.memo-add-btn:hover {
+  opacity: 0.9;
+}
+
+.memo-add-btn:active {
+  transform: scale(0.97);
+}
+
+.memo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.memo-item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.2s ease;
+}
+
+.memo-item-text {
+  flex: 1;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.memo-item-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.memo-item-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: color 0.2s;
+}
+
+.memo-item-delete:hover {
+  color: var(--danger);
+}
+
+.memo-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  font-size: 0.95rem;
+}
+
+/* ========================================
+   フォーカスバブル - セットアップ画面
+   ======================================== */
+.focus-field {
+  margin-bottom: 24px;
+}
+
+.focus-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.focus-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.focus-input:focus {
+  border-color: var(--bubble-blue);
+}
+
+.focus-input::placeholder {
+  color: var(--text-muted);
+}
+
+.focus-input-sub {
+  font-size: 0.95rem;
+  padding: 12px 16px;
+}
+
+/* 時間選択ボタン */
+.time-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.time-btn {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.time-btn:hover {
+  border-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.time-btn.selected {
+  background: var(--bubble-blue);
+  color: white;
+  border-color: var(--bubble-blue);
+}
+
+/* 開始ボタン */
+.focus-start-btn {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, var(--bubble-blue), #2563eb);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 18px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 32px;
+  letter-spacing: 0.03em;
+}
+
+.focus-start-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+.focus-start-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ========================================
+   フォーカスバブル - 集中中画面
+   ======================================== */
+.focus-active {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 100px);
+}
+
+.bubble-container {
+  flex: 1;
+  position: relative;
+  min-height: 300px;
+  max-height: 500px;
+  overflow: hidden;
+}
+
+.bubble-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bubble-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bubble-task {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.bubble-timer-ring {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.progress-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 3;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: var(--bubble-blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 282.74; /* 2π × 45 */
+  stroke-dashoffset: 0;
+  transition: stroke 0.5s;
+}
+
+.bubble-time {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.bubble-time.overtime {
+  color: var(--danger);
+}
+
+.bubble-next {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* 集中中コントロール */
+.focus-controls {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.focus-ctrl-btn {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.focus-ctrl-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.focus-surface-btn {
+  flex: 1;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bubble-blue);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.focus-surface-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+}
+
+.focus-surface-btn.pulse {
+  animation: surfacePulse 1.5s ease infinite;
+}
+
+@keyframes surfacePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+}
+
+/* 警告エフェクト */
+.focus-active.warning-pulse {
+  animation: warningPulse 3s ease infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% { box-shadow: inset 0 0 0 0 transparent; }
+  50% { box-shadow: inset 0 0 40px rgba(245, 158, 11, 0.08); }
+}
+
+.focus-active.urgent-glow {
+  box-shadow: inset 0 0 60px rgba(245, 158, 11, 0.12);
+}
+
+.focus-active.overtime-mode {
+  box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.1);
+}
+
+/* ========================================
+   フォーカスバブル - 結果画面
+   ======================================== */
+.focus-result {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.result-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  margin-bottom: 24px;
+}
+
+.result-emoji {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.result-task {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.result-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.result-next {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.back-btn-large {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+}
+
+.back-btn-large:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+/* ========================================
+   Coming Soon プレースホルダー
+   ======================================== */
+.coming-soon {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 80px 20px;
+  font-size: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 2px dashed var(--bg-card);
+}
+
+/* ========================================
+   ユーティリティ
+   ======================================== */
+button {
+  font-family: inherit;
+}
+
+/* スクロールバー */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card);
+  border-radius: 2px;
+}
+
+/* セーフエリア（ノッチ対応） */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .app-header {
+    padding-top: calc(20px + env(safe-area-inset-top));
+  }
+  .screen {
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  }
+}

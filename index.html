@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>ADHDコンパス</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="app">
+    <!-- ホーム画面 -->
+    <section id="screen-home" class="screen active">
+      <header class="app-header">
+        <h1 class="app-title">🧭 ADHDコンパス</h1>
+      </header>
+
+      <!-- 感情チェックイン -->
+      <div class="mood-checkin" id="mood-checkin">
+        <p class="mood-question">今の気分は？</p>
+        <div class="mood-buttons">
+          <button class="mood-btn" data-mood="great" aria-label="とても良い">😊</button>
+          <button class="mood-btn" data-mood="okay" aria-label="普通">😐</button>
+          <button class="mood-btn" data-mood="low" aria-label="落ち込み">😔</button>
+          <button class="mood-btn" data-mood="irritated" aria-label="イライラ">😤</button>
+        </div>
+        <p class="mood-result" id="mood-result"></p>
+      </div>
+
+      <!-- メインナビゲーション -->
+      <nav class="main-nav">
+        <button class="nav-card" data-screen="focus">
+          <span class="nav-icon">🫧</span>
+          <span class="nav-label">集中する</span>
+          <span class="nav-desc">フォーカスバブル</span>
+        </button>
+        <button class="nav-card" data-screen="quest">
+          <span class="nav-icon">🏰</span>
+          <span class="nav-label">クエスト</span>
+          <span class="nav-desc">ルーティン</span>
+        </button>
+        <button class="nav-card" data-screen="memo">
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">メモ</span>
+          <span class="nav-desc">思いつき</span>
+        </button>
+        <button class="nav-card" data-screen="stats">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">ふりかえり</span>
+          <span class="nav-desc">統計</span>
+        </button>
+      </nav>
+
+      <!-- 今日のサマリー -->
+      <div class="today-summary" id="today-summary">
+        <h2 class="summary-title">今日のできたこと</h2>
+        <p class="summary-empty">まだ記録がないよ。何か始めてみよう！</p>
+      </div>
+    </section>
+
+    <!-- フォーカスバブル画面 -->
+    <section id="screen-focus" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
+        <h2>🫧 フォーカスバブル</h2>
+      </header>
+
+      <!-- セットアップ画面 -->
+      <div id="focus-setup" class="focus-setup">
+        <div class="focus-field">
+          <label class="focus-label" for="focus-task-input">何に集中する？</label>
+          <input type="text" id="focus-task-input" class="focus-input" placeholder="例: レポート作成" autocomplete="off">
+        </div>
+
+        <div class="focus-field">
+          <label class="focus-label">集中する時間</label>
+          <div class="time-selector">
+            <button class="time-btn" data-minutes="15">15分</button>
+            <button class="time-btn selected" data-minutes="25">25分</button>
+            <button class="time-btn" data-minutes="45">45分</button>
+            <button class="time-btn" data-minutes="90">90分</button>
+          </div>
+        </div>
+
+        <div class="focus-field">
+          <label class="focus-label" for="focus-next-input">次にやること（任意）</label>
+          <input type="text" id="focus-next-input" class="focus-input focus-input-sub" placeholder="過集中から戻った時の道しるべ">
+        </div>
+
+        <button id="focus-start-btn" class="focus-start-btn">
+          🫧 バブルに入る
+        </button>
+      </div>
+
+      <!-- 集中中画面 -->
+      <div id="focus-active" class="focus-active" style="display:none;">
+        <div class="bubble-container">
+          <canvas id="bubble-canvas"></canvas>
+          <div class="bubble-overlay">
+            <p id="focus-current-task" class="bubble-task"></p>
+            <div class="bubble-timer-ring">
+              <svg viewBox="0 0 100 100" class="progress-ring">
+                <circle cx="50" cy="50" r="45" class="progress-ring-bg"/>
+                <circle id="focus-progress-circle" cx="50" cy="50" r="45" class="progress-ring-fill"/>
+              </svg>
+              <span id="focus-time-display" class="bubble-time">25:00</span>
+            </div>
+            <p id="focus-next-display" class="bubble-next"></p>
+          </div>
+        </div>
+
+        <div class="focus-controls">
+          <button id="focus-pause-btn" class="focus-ctrl-btn">⏸ 一時停止</button>
+          <button id="focus-surface-btn" class="focus-surface-btn">🫧 浮上する</button>
+        </div>
+      </div>
+
+      <!-- 結果画面 -->
+      <div id="focus-result" class="focus-result" style="display:none;">
+        <div class="result-card">
+          <p class="result-emoji">✨</p>
+          <p id="result-task" class="result-task"></p>
+          <p id="result-time" class="result-time"></p>
+          <p id="result-next-task" class="result-next"></p>
+        </div>
+        <button class="focus-start-btn" onclick="Focus.resetToSetup()">もう1セッション</button>
+        <button class="back-btn-large" data-screen="home">ホームに戻る</button>
+      </div>
+    </section>
+
+    <!-- クエスト画面 -->
+    <section id="screen-quest" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
+        <h2>🏰 ルーティンクエスト</h2>
+      </header>
+      <div class="quest-content">
+        <p class="coming-soon">Step 5 で実装予定</p>
+      </div>
+    </section>
+
+    <!-- メモ画面 -->
+    <section id="screen-memo" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
+        <h2>📝 気になったことメモ</h2>
+      </header>
+      <div class="memo-content">
+        <div class="memo-input-area">
+          <input type="text" id="memo-input" class="memo-input" placeholder="思いついたことを書く..." autocomplete="off">
+          <button id="memo-add-btn" class="memo-add-btn">追加</button>
+        </div>
+        <ul id="memo-list" class="memo-list"></ul>
+        <p id="memo-empty" class="memo-empty">まだメモがないよ</p>
+      </div>
+    </section>
+
+    <!-- 統計画面 -->
+    <section id="screen-stats" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
+        <h2>📊 ふりかえり</h2>
+      </header>
+      <div class="stats-content">
+        <p class="coming-soon">Step 7 で実装予定</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/bubble.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
