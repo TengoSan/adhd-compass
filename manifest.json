@@ -2,7 +2,7 @@
   "name": "ADHDコンパス",
   "short_name": "ADHDコンパス",
   "description": "ADHDの人のための集中管理・ルーティン・感情トラッキングアプリ",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#1a1a2e",

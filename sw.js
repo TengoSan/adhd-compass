@@ -2,19 +2,19 @@
  * ADHDコンパス - Service Worker
  * オフライン対応
  */
-const CACHE_NAME = 'adhd-compass-v1';
+const CACHE_NAME = 'adhd-compass-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/storage.js',
-  '/js/timer.js',
-  '/js/bubble.js',
-  '/js/focus.js',
-  '/js/quest.js',
-  '/js/stats.js',
-  '/js/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './css/style.css',
+  './js/storage.js',
+  './js/timer.js',
+  './js/bubble.js',
+  './js/focus.js',
+  './js/quest.js',
+  './js/stats.js',
+  './js/app.js',
+  './manifest.json'
 ];
 
 // インストール時にアセットをキャッシュ
