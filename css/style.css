@@ -265,6 +265,25 @@ body {
 }
 
 /* ========================================
+   コーチメッセージ
+   ======================================== */
+.coach-message {
+  background: var(--accent-soft);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+  animation: fadeIn 0.3s ease;
+}
+
+.coach-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ========================================
    今日やること（ホーム画面タスク管理）
    ======================================== */
 .section-title {
@@ -360,14 +379,106 @@ body {
 }
 
 .today-task-add-btn {
-  background: var(--bubble-blue);
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 8px;
   width: 40px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.15s;
+}
+
+.today-task-decompose-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.today-task-decompose-btn:hover {
+  background: var(--bg-hover);
+}
+
+/* タスク分解結果 */
+.decompose-result {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-top: 12px;
+  animation: fadeIn 0.25s ease;
+}
+
+.decompose-title {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.decompose-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.decompose-step {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.decompose-step-num {
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 8px;
+  min-width: 20px;
+}
+
+.decompose-step-text {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.decompose-step-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+.decompose-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.decompose-add-btn {
+  flex: 1;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.decompose-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  cursor: pointer;
 }
 
 .today-task-hint {

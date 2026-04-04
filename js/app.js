@@ -13,6 +13,7 @@ const App = {
     this.setupMoodCheckin();
     this.setupMemo();
     this.setupTodayTasks();
+    this.setupDecompose();
     this.restoreMoodState();
     this.updateSummary();
     Focus.init();
@@ -102,6 +103,9 @@ const App = {
           result.style.opacity = '1';
         });
 
+        // コーチメッセージを表示
+        this.showCoachMessage(mood);
+
         // 保存
         Storage.saveMood(mood);
       });
@@ -122,6 +126,7 @@ const App = {
         const h = String(time.getHours()).padStart(2, '0');
         const m = String(time.getMinutes()).padStart(2, '0');
         document.getElementById('mood-result').textContent = `${h}:${m} に記録済み`;
+        this.showCoachMessage(todayMood.mood);
       }
     }
   },
@@ -317,6 +322,86 @@ const App = {
         this.deleteTodayTask(id);
       });
     });
+  },
+
+  // ========================================
+  // コーチメッセージ
+  // ========================================
+
+  showCoachMessage(mood) {
+    const coachEl = document.getElementById('coach-message');
+    const textEl = document.getElementById('coach-text');
+    if (!coachEl || !textEl) return;
+
+    const message = AIEngine.getCoachMessage(mood);
+    textEl.textContent = message;
+    coachEl.style.display = 'block';
+  },
+
+  // ========================================
+  // タスク分解
+  // ========================================
+
+  _decomposeSteps: [],
+
+  setupDecompose() {
+    const decomposeBtn = document.getElementById('today-task-decompose-btn');
+    const addAllBtn = document.getElementById('decompose-add-all');
+    const cancelBtn = document.getElementById('decompose-cancel');
+
+    if (decomposeBtn) {
+      decomposeBtn.addEventListener('click', () => this.decomposeTask());
+    }
+    if (addAllBtn) {
+      addAllBtn.addEventListener('click', () => this.addDecomposedSteps());
+    }
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.hideDecompose());
+    }
+  },
+
+  decomposeTask() {
+    const input = document.getElementById('today-task-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const steps = AIEngine.decomposeTask(text);
+    this._decomposeSteps = steps;
+
+    const stepsEl = document.getElementById('decompose-steps');
+    stepsEl.innerHTML = steps.map((s, i) => `
+      <div class="decompose-step">
+        <span class="decompose-step-num">${i + 1}</span>
+        <span class="decompose-step-text">${this.escapeHtml(s.text)}</span>
+        <span class="decompose-step-time">${s.minutes}分</span>
+      </div>
+    `).join('');
+
+    document.getElementById('decompose-result').style.display = 'block';
+  },
+
+  addDecomposedSteps() {
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    if (!tasks[today]) tasks[today] = [];
+
+    this._decomposeSteps.forEach(step => {
+      tasks[today].push({
+        id: Date.now() + Math.random(),
+        text: step.text,
+        done: false
+      });
+    });
+
+    Storage.save('today-tasks', tasks);
+    document.getElementById('today-task-input').value = '';
+    this.hideDecompose();
+    this.renderTodayTasks();
+  },
+
+  hideDecompose() {
+    document.getElementById('decompose-result').style.display = 'none';
+    this._decomposeSteps = [];
   },
 
   // ========================================
