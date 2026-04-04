@@ -11,23 +11,29 @@
 }
 
 :root {
-  /* カラーパレット */
-  --bg-primary: #1a1a2e;
-  --bg-secondary: #16213e;
-  --bg-card: #0f3460;
-  --text-primary: #e8e8e8;
-  --text-secondary: #a0a0b0;
-  --text-muted: #6a6a7a;
-  --accent: #e94560;
-  --accent-soft: #533483;
+  /* カラーパレット - ミニマル・モダン */
+  --bg-primary: #0d0d1a;
+  --bg-secondary: #161625;
+  --bg-card: #1e1e32;
+  --bg-hover: #252540;
+  --text-primary: #ececf0;
+  --text-secondary: #9898a8;
+  --text-muted: #5a5a6e;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-soft: rgba(59, 130, 246, 0.12);
   --success: #4ade80;
   --warning: #fbbf24;
   --danger: #ef4444;
   --bubble-blue: #3b82f6;
   --bubble-yellow: #f59e0b;
   --bubble-red: #ef4444;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
 
-  /* サイズ */
+  /* サイズ - 8px grid */
   --radius: 16px;
   --radius-sm: 10px;
   --spacing: 16px;
@@ -46,6 +52,9 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 #app {
@@ -83,9 +92,9 @@ body {
 }
 
 .app-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .screen-header {
@@ -97,7 +106,7 @@ body {
 }
 
 .screen-header h2 {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
 }
 
@@ -121,10 +130,12 @@ body {
    ======================================== */
 .mood-checkin {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 24px;
   margin: 16px 0;
   text-align: center;
+  box-shadow: var(--shadow);
 }
 
 .mood-question {
@@ -140,22 +151,22 @@ body {
 }
 
 .mood-btn {
-  font-size: 2.2rem;
+  font-size: 2rem;
   background: var(--bg-card);
-  border: 3px solid transparent;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .mood-btn:hover {
-  transform: scale(1.1);
-  border-color: var(--accent-soft);
+  transform: scale(1.08);
+  background: var(--bg-hover);
 }
 
 .mood-btn:active {
@@ -163,9 +174,10 @@ body {
 }
 
 .mood-btn.selected {
-  border-color: var(--accent);
   background: var(--accent-soft);
-  transform: scale(1.1);
+  border-color: var(--accent);
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
 }
 
 .mood-result {
@@ -188,26 +200,28 @@ body {
 
 .nav-card {
   background: var(--bg-secondary);
-  border: 2px solid transparent;
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px 16px;
+  padding: 24px 16px;
   cursor: pointer;
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  box-shadow: var(--shadow);
 }
 
 .nav-card:hover {
-  border-color: var(--accent-soft);
   background: var(--bg-card);
-  transform: translateY(-2px);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .nav-card:active {
-  transform: translateY(0) scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
 .nav-icon {
@@ -217,7 +231,7 @@ body {
 
 .nav-label {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-primary);
 }
 
@@ -262,9 +276,11 @@ body {
 
 .today-tasks {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   margin-top: 16px;
+  box-shadow: var(--shadow);
 }
 
 .today-task-list {
@@ -363,9 +379,11 @@ body {
 
 .today-summary {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   margin-top: 12px;
+  box-shadow: var(--shadow);
 }
 
 .summary-content {
@@ -387,17 +405,18 @@ body {
 .memo-input {
   flex: 1;
   background: var(--bg-secondary);
-  border: 2px solid var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
   font-size: 1rem;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
 
 .memo-input:focus {
-  border-color: var(--accent-soft);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .memo-input::placeholder {
@@ -411,14 +430,14 @@ body {
   border-radius: var(--radius-sm);
   padding: 14px 20px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.15s;
   white-space: nowrap;
 }
 
 .memo-add-btn:hover {
-  opacity: 0.9;
+  background: var(--accent-hover);
 }
 
 .memo-add-btn:active {
@@ -434,6 +453,7 @@ body {
 
 .memo-item {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
   display: flex;
@@ -495,17 +515,18 @@ body {
 .focus-input {
   width: 100%;
   background: var(--bg-secondary);
-  border: 2px solid transparent;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 16px;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
 
 .focus-input:focus {
-  border-color: var(--bubble-blue);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .focus-input::placeholder {
@@ -526,18 +547,18 @@ body {
 .time-btn {
   flex: 1;
   background: var(--bg-secondary);
-  border: 2px solid transparent;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 8px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .time-btn:hover {
-  border-color: var(--bg-card);
+  background: var(--bg-card);
   color: var(--text-primary);
 }
 
@@ -551,22 +572,23 @@ body {
 .focus-start-btn {
   display: block;
   width: 100%;
-  background: linear-gradient(135deg, var(--bubble-blue), #2563eb);
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: var(--radius);
-  padding: 18px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  padding: 16px;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   margin-top: 32px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 
 .focus-start-btn:hover {
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
 }
 
 .focus-start-btn:active {
@@ -914,9 +936,11 @@ body {
 
 .result-card {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 40px 24px;
   margin-bottom: 24px;
+  box-shadow: var(--shadow);
 }
 
 .result-emoji {
@@ -932,7 +956,7 @@ body {
 
 .result-time {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
@@ -1109,9 +1133,11 @@ body {
   align-items: center;
   justify-content: space-between;
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   margin-bottom: 16px;
+  box-shadow: var(--shadow);
 }
 
 .quest-character {
@@ -1132,7 +1158,7 @@ body {
 
 .quest-level {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
@@ -1202,9 +1228,10 @@ body {
   align-items: center;
   gap: 10px;
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 12px;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .quest-item.done {
@@ -1232,7 +1259,7 @@ body {
 .quest-exp {
   font-size: 0.8rem;
   color: var(--warning);
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -1336,9 +1363,11 @@ body {
    ======================================== */
 .stats-card {
   background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
   margin-bottom: 12px;
+  box-shadow: var(--shadow);
 }
 
 .stats-card-title {
@@ -1361,7 +1390,7 @@ body {
 .stats-value {
   display: block;
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
 }
