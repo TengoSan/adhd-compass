@@ -52,10 +52,21 @@
         </button>
       </nav>
 
+      <!-- 今日やること（タスク管理） -->
+      <div class="today-tasks">
+        <h2 class="section-title">今日やること</h2>
+        <div id="today-task-list" class="today-task-list"></div>
+        <div class="today-task-add">
+          <input type="text" id="today-task-input" class="today-task-input" placeholder="タスクを追加..." autocomplete="off" maxlength="50">
+          <button id="today-task-add-btn" class="today-task-add-btn">+</button>
+        </div>
+        <p class="today-task-hint" id="today-task-hint">3つまでに絞ろう。少ないほうが達成できる！</p>
+      </div>
+
       <!-- 今日のサマリー -->
       <div class="today-summary" id="today-summary">
-        <h2 class="summary-title">今日のできたこと</h2>
-        <p class="summary-empty">まだ記録がないよ。何か始めてみよう！</p>
+        <h2 class="section-title">今日のできたこと</h2>
+        <p class="summary-content" id="summary-content"></p>
       </div>
     </section>
 
@@ -214,8 +225,54 @@
         <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
         <h2>🏰 ルーティンクエスト</h2>
       </header>
-      <div class="quest-content">
-        <p class="coming-soon">Step 5 で実装予定</p>
+
+      <!-- キャラクターステータス -->
+      <div class="quest-status">
+        <div class="quest-character">
+          <span class="quest-avatar" id="quest-avatar">🧙</span>
+          <div class="quest-info">
+            <p class="quest-level" id="quest-level">Lv.1</p>
+            <div class="quest-exp-bar">
+              <div class="quest-exp-fill" id="quest-exp-fill" style="width:0%"></div>
+            </div>
+            <p class="quest-exp-text" id="quest-exp-text">0 / 100 EXP</p>
+          </div>
+        </div>
+        <div class="quest-streak" id="quest-streak">🔥 0日連続</div>
+      </div>
+
+      <!-- 時間帯タブ -->
+      <div class="quest-tabs">
+        <button class="quest-tab active" data-period="morning">🌅 朝</button>
+        <button class="quest-tab" data-period="afternoon">☀️ 昼</button>
+        <button class="quest-tab" data-period="evening">🌙 夜</button>
+      </div>
+
+      <!-- クエストリスト -->
+      <div class="quest-list" id="quest-list"></div>
+
+      <!-- クエスト追加 -->
+      <div class="quest-add-area">
+        <button id="quest-add-btn" class="quest-add-btn">+ クエストを追加</button>
+        <div id="quest-add-form" class="quest-add-form" style="display:none;">
+          <input type="text" id="quest-add-input" class="focus-input" placeholder="例: 歯みがき" autocomplete="off">
+          <div class="quest-add-actions">
+            <select id="quest-add-exp" class="quest-add-select">
+              <option value="10">+10 EXP（かんたん）</option>
+              <option value="20" selected>+20 EXP（ふつう）</option>
+              <option value="30">+30 EXP（がんばる）</option>
+            </select>
+            <button id="quest-add-save" class="memo-add-btn">追加</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 進捗バー -->
+      <div class="quest-progress-area" id="quest-progress-area">
+        <div class="quest-progress-bar">
+          <div class="quest-progress-fill" id="quest-progress-fill"></div>
+        </div>
+        <p class="quest-progress-text" id="quest-progress-text"></p>
       </div>
     </section>
 
@@ -241,8 +298,46 @@
         <button class="back-btn" data-screen="home" aria-label="戻る">← 戻る</button>
         <h2>📊 ふりかえり</h2>
       </header>
-      <div class="stats-content">
-        <p class="coming-soon">Step 7 で実装予定</p>
+
+      <!-- 今週のサマリー -->
+      <div class="stats-card">
+        <h3 class="stats-card-title">今週のまとめ</h3>
+        <div class="stats-grid">
+          <div class="stats-metric">
+            <span class="stats-value" id="stats-focus-total">0</span>
+            <span class="stats-label">集中（分）</span>
+          </div>
+          <div class="stats-metric">
+            <span class="stats-value" id="stats-sessions">0</span>
+            <span class="stats-label">セッション</span>
+          </div>
+          <div class="stats-metric">
+            <span class="stats-value" id="stats-quests">0</span>
+            <span class="stats-label">クエスト完了</span>
+          </div>
+          <div class="stats-metric">
+            <span class="stats-value" id="stats-streak">0</span>
+            <span class="stats-label">連続日数</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 集中時間グラフ（7日間） -->
+      <div class="stats-card">
+        <h3 class="stats-card-title">集中時間（7日間）</h3>
+        <div class="stats-bar-chart" id="stats-focus-chart"></div>
+      </div>
+
+      <!-- 感情推移 -->
+      <div class="stats-card">
+        <h3 class="stats-card-title">気分の推移（7日間）</h3>
+        <div class="stats-mood-chart" id="stats-mood-chart"></div>
+      </div>
+
+      <!-- パターン分析 -->
+      <div class="stats-card">
+        <h3 class="stats-card-title">分析</h3>
+        <p class="stats-insight" id="stats-insight">データが貯まると傾向が見えてくるよ</p>
       </div>
     </section>
   </div>
@@ -251,6 +346,14 @@
   <script src="js/timer.js"></script>
   <script src="js/bubble.js"></script>
   <script src="js/focus.js"></script>
+  <script src="js/quest.js"></script>
+  <script src="js/stats.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    // Service Worker登録
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>

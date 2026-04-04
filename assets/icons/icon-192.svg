@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="40" fill="#1a1a2e"/>
+  <circle cx="96" cy="88" r="50" fill="none" stroke="#3b82f6" stroke-width="4" opacity="0.6"/>
+  <circle cx="96" cy="88" r="35" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.3"/>
+  <text x="96" y="100" text-anchor="middle" font-size="48" fill="white">🧭</text>
+  <text x="96" y="170" text-anchor="middle" font-size="18" font-family="sans-serif" font-weight="bold" fill="#e8e8e8">ADHD</text>
+</svg>

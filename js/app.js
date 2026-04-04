@@ -12,9 +12,12 @@ const App = {
     this.setupNavigation();
     this.setupMoodCheckin();
     this.setupMemo();
+    this.setupTodayTasks();
     this.restoreMoodState();
+    this.updateSummary();
     Focus.init();
     Focus.initBreak();
+    Quest.init();
   },
 
   // ========================================
@@ -58,6 +61,8 @@ const App = {
 
     // 指定画面を表示
     const target = document.getElementById('screen-' + screenId);
+    if (screenId === 'stats') Stats.refresh();
+    if (screenId === 'home') this.updateSummary();
     if (target) {
       target.classList.add('active');
       this.currentScreen = screenId;
@@ -207,6 +212,135 @@ const App = {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  },
+
+  // ========================================
+  // 今日やること（タスク管理）
+  // ========================================
+
+  setupTodayTasks() {
+    const input = document.getElementById('today-task-input');
+    const addBtn = document.getElementById('today-task-add-btn');
+
+    if (addBtn) {
+      addBtn.addEventListener('click', () => this.addTodayTask());
+    }
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') this.addTodayTask();
+      });
+    }
+
+    this.renderTodayTasks();
+  },
+
+  addTodayTask() {
+    const input = document.getElementById('today-task-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    if (!tasks[today]) tasks[today] = [];
+
+    tasks[today].push({
+      id: Date.now(),
+      text: text,
+      done: false
+    });
+
+    Storage.save('today-tasks', tasks);
+    input.value = '';
+    this.renderTodayTasks();
+  },
+
+  toggleTodayTask(id) {
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    if (!tasks[today]) return;
+
+    const task = tasks[today].find(t => t.id === id);
+    if (task) {
+      task.done = !task.done;
+      Storage.save('today-tasks', tasks);
+      this.renderTodayTasks();
+      this.updateSummary();
+    }
+  },
+
+  deleteTodayTask(id) {
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    if (!tasks[today]) return;
+
+    tasks[today] = tasks[today].filter(t => t.id !== id);
+    Storage.save('today-tasks', tasks);
+    this.renderTodayTasks();
+    this.updateSummary();
+  },
+
+  renderTodayTasks() {
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    const todayTasks = tasks[today] || [];
+    const list = document.getElementById('today-task-list');
+    const hint = document.getElementById('today-task-hint');
+
+    if (todayTasks.length === 0) {
+      list.innerHTML = '';
+      if (hint) hint.style.display = 'block';
+      return;
+    }
+
+    if (hint) {
+      hint.style.display = todayTasks.length >= 3 ? 'none' : 'block';
+    }
+
+    list.innerHTML = todayTasks.map(t => `
+      <div class="today-task-item ${t.done ? 'done' : ''}" data-id="${t.id}">
+        <button class="today-task-check">${t.done ? '✅' : '○'}</button>
+        <span class="today-task-text">${this.escapeHtml(t.text)}</span>
+        <button class="today-task-delete">×</button>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('.today-task-check').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.closest('.today-task-item').dataset.id);
+        this.toggleTodayTask(id);
+      });
+    });
+
+    list.querySelectorAll('.today-task-delete').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.closest('.today-task-item').dataset.id);
+        this.deleteTodayTask(id);
+      });
+    });
+  },
+
+  // ========================================
+  // 今日のサマリー
+  // ========================================
+
+  updateSummary() {
+    const el = document.getElementById('summary-content');
+    if (!el) return;
+
+    const today = Storage.todayKey();
+    const tasks = Storage.load('today-tasks', {});
+    const todayTasks = tasks[today] || [];
+    const doneCount = todayTasks.filter(t => t.done).length;
+
+    const sessions = Storage.load('focus-sessions', []);
+    const todaySessions = sessions.filter(s => s.startTime && s.startTime.startsWith(today));
+    const totalMin = Math.round(todaySessions.reduce((sum, s) => sum + (s.actualMs || 0), 0) / 60000);
+
+    const parts = [];
+    if (doneCount > 0) parts.push(`タスク ${doneCount}個完了`);
+    if (totalMin > 0) parts.push(`集中 ${totalMin}分`);
+
+    el.textContent = parts.length > 0 ? parts.join(' / ') : 'まだ記録がないよ。何か始めてみよう！';
   }
 };
 
