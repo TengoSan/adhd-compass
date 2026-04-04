@@ -594,6 +594,173 @@ body {
   50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
 }
 
+/* ========================================
+   集中中クイックメモ
+   ======================================== */
+.focus-quick-memo {
+  padding: 0 0 8px;
+}
+
+.focus-memo-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.focus-memo-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.focus-memo-input-area {
+  display: flex;
+  gap: 8px;
+  animation: fadeIn 0.2s ease;
+}
+
+.focus-memo-input {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.focus-memo-input:focus {
+  border-color: var(--bubble-blue);
+}
+
+.focus-memo-save {
+  background: var(--bubble-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ========================================
+   リカバリー画面（アプリ復帰時）
+   ======================================== */
+.focus-recovery {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 46, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+.recovery-card {
+  text-align: center;
+  padding: 40px 32px;
+  max-width: 360px;
+  width: 90%;
+}
+
+.recovery-emoji {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.recovery-greeting {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.recovery-task {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.recovery-task-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--bubble-blue);
+  margin-bottom: 8px;
+}
+
+.recovery-elapsed {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+/* ========================================
+   5秒ルールオーバーレイ
+   ======================================== */
+.five-sec-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 46, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+
+.five-sec-content {
+  text-align: center;
+}
+
+.five-sec-label {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.five-sec-count {
+  font-size: 5rem;
+  font-weight: 200;
+  color: var(--warning);
+  margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.five-sec-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.five-sec-cancel {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius);
+  padding: 14px 32px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.five-sec-cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
 /* 警告エフェクト */
 .focus-active.warning-pulse {
   animation: warningPulse 3s ease infinite;
@@ -644,10 +811,150 @@ body {
   color: var(--text-primary);
 }
 
+.result-stats {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .result-next {
   margin-top: 16px;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+.focus-start-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: var(--bubble-blue);
+  margin-top: 8px;
+}
+
+.focus-start-btn-secondary:hover {
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ========================================
+   休憩モード
+   ======================================== */
+.focus-break {
+  text-align: center;
+  padding-top: 24px;
+}
+
+.break-header {
+  margin-bottom: 32px;
+}
+
+.break-emoji {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.break-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.break-question {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.break-time-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.break-time-btn {
+  background: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.break-time-btn.selected {
+  background: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+.break-timer-ring {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 24px;
+}
+
+.break-ring {
+  stroke: #4ade80 !important;
+}
+
+.break-time-text {
+  color: #4ade80 !important;
+}
+
+.break-active {
+  padding-top: 16px;
+}
+
+.break-activity {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 0 auto 24px;
+  max-width: 320px;
+}
+
+.break-activity-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.break-activity-text {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.break-next-task {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+.break-done {
+  padding-top: 40px;
+}
+
+.break-done-emoji {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.break-done-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.break-done-next {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
 }
 
 .back-btn-large {

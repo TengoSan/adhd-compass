@@ -110,9 +110,40 @@
           </div>
         </div>
 
+        <!-- 集中中クイックメモ -->
+        <div class="focus-quick-memo">
+          <button id="focus-memo-btn" class="focus-memo-btn">💭 気になった</button>
+          <div id="focus-memo-input-area" class="focus-memo-input-area" style="display:none;">
+            <input type="text" id="focus-memo-input" class="focus-memo-input" placeholder="思いついたことを書く..." autocomplete="off">
+            <button id="focus-memo-save" class="focus-memo-save">保存</button>
+          </div>
+        </div>
+
         <div class="focus-controls">
           <button id="focus-pause-btn" class="focus-ctrl-btn">⏸ 一時停止</button>
           <button id="focus-surface-btn" class="focus-surface-btn">🫧 浮上する</button>
+        </div>
+      </div>
+
+      <!-- リカバリー画面（アプリ離脱→復帰時） -->
+      <div id="focus-recovery" class="focus-recovery" style="display:none;">
+        <div class="recovery-card">
+          <p class="recovery-emoji">👋</p>
+          <p class="recovery-greeting">おかえり！</p>
+          <p class="recovery-task">今のタスクは</p>
+          <p id="recovery-task-name" class="recovery-task-name"></p>
+          <p id="recovery-elapsed" class="recovery-elapsed"></p>
+          <button id="recovery-resume-btn" class="focus-start-btn">集中に戻る</button>
+        </div>
+      </div>
+
+      <!-- 5秒ルールオーバーレイ -->
+      <div id="five-sec-overlay" class="five-sec-overlay" style="display:none;">
+        <div class="five-sec-content">
+          <p class="five-sec-label">本当にやる？</p>
+          <p id="five-sec-count" class="five-sec-count">5</p>
+          <p class="five-sec-hint">5秒待ってまだやりたければメモに追加</p>
+          <button id="five-sec-cancel" class="five-sec-cancel">やっぱりやめる</button>
         </div>
       </div>
 
@@ -122,10 +153,58 @@
           <p class="result-emoji">✨</p>
           <p id="result-task" class="result-task"></p>
           <p id="result-time" class="result-time"></p>
+          <p id="result-stats" class="result-stats"></p>
           <p id="result-next-task" class="result-next"></p>
         </div>
-        <button class="focus-start-btn" onclick="Focus.resetToSetup()">もう1セッション</button>
+        <button id="result-break-btn" class="focus-start-btn">☕ 休憩する</button>
+        <button class="focus-start-btn focus-start-btn-secondary" onclick="Focus.resetToSetup()">もう1セッション</button>
         <button class="back-btn-large" data-screen="home">ホームに戻る</button>
+      </div>
+
+      <!-- 休憩画面 -->
+      <div id="focus-break" class="focus-break" style="display:none;">
+        <div class="break-header">
+          <p class="break-emoji">☕</p>
+          <p class="break-title">休憩タイム</p>
+        </div>
+
+        <!-- 休憩時間選択（最初だけ表示） -->
+        <div id="break-setup" class="break-setup">
+          <p class="break-question">どのくらい休む？</p>
+          <div class="break-time-selector">
+            <button class="break-time-btn selected" data-minutes="5">5分</button>
+            <button class="break-time-btn" data-minutes="10">10分</button>
+            <button class="break-time-btn" data-minutes="15">15分</button>
+          </div>
+          <button id="break-start-btn" class="focus-start-btn">休憩スタート</button>
+        </div>
+
+        <!-- 休憩中 -->
+        <div id="break-active" class="break-active" style="display:none;">
+          <div class="break-timer-ring">
+            <svg viewBox="0 0 100 100" class="progress-ring">
+              <circle cx="50" cy="50" r="45" class="progress-ring-bg"/>
+              <circle id="break-progress-circle" cx="50" cy="50" r="45" class="progress-ring-fill break-ring"/>
+            </svg>
+            <span id="break-time-display" class="bubble-time break-time-text">05:00</span>
+          </div>
+
+          <div class="break-activity" id="break-activity">
+            <p class="break-activity-label">やってみよう</p>
+            <p class="break-activity-text" id="break-activity-text"></p>
+          </div>
+
+          <p id="break-next-task" class="break-next-task"></p>
+        </div>
+
+        <!-- 休憩終了 -->
+        <div id="break-done" class="break-done" style="display:none;">
+          <p class="break-done-emoji">✨</p>
+          <p class="break-done-text">リフレッシュ完了！</p>
+          <p id="break-done-next" class="break-done-next"></p>
+          <button id="break-to-focus" class="focus-start-btn">次のセッションへ</button>
+          <button class="back-btn-large" data-screen="home">ホームに戻る</button>
+        </div>
       </div>
     </section>
 

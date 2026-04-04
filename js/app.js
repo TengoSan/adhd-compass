@@ -14,6 +14,7 @@ const App = {
     this.setupMemo();
     this.restoreMoodState();
     Focus.init();
+    Focus.initBreak();
   },
 
   // ========================================
@@ -37,6 +38,9 @@ const App = {
         // フォーカス画面からの場合はリセット
         if (btn.closest('#screen-focus')) {
           Focus.resetToSetup();
+          // 休憩画面も非表示に
+          const breakEl = document.getElementById('focus-break');
+          if (breakEl) breakEl.style.display = 'none';
         }
         this.navigateTo(btn.dataset.screen);
       });
