@@ -19,9 +19,7 @@
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "assets/icons/icon.icns",
-      "hardenedRuntime": true,
-      "entitlements": "electron/entitlements.plist",
-      "entitlementsInherit": "electron/entitlements.plist"
+      "hardenedRuntime": false
     },
     "files": [
       "electron/**/*",
