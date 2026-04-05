@@ -14,6 +14,7 @@ const Focus = {
     this.setupTimeButtons();
     this.setupStartButton();
     this.setupFocusControls();
+    this._setupDesktopDetection();
   },
 
   /**
@@ -125,6 +126,11 @@ const Focus = {
     Timer.start(this.selectedMinutes);
     this._leaveCount = 0;
     this.requestNotificationPermission();
+
+    // Electron: デスクトップ検出エンジン開始
+    if (window.electronAPI) {
+      window.electronAPI.startDetector();
+    }
 
     // Canvas初期化＋アニメーション開始（表示後にサイズを取得する必要がある）
     requestAnimationFrame(() => {
@@ -263,6 +269,12 @@ const Focus = {
     Timer.stop();
     BubbleAnimation.stop();
     this._overtimeAlert = false;
+    this._shortSessionSuggested = false;
+
+    // Electron: デスクトップ検出エンジン停止
+    if (window.electronAPI) {
+      window.electronAPI.stopDetector();
+    }
 
     // セッションデータを保存
     const session = {
@@ -382,6 +394,59 @@ const Focus = {
   },
 
   // ========================================
+  // ========================================
+  // デスクトップ検出イベント受信
+  // ========================================
+
+  /**
+   * Electron検出エンジンのイベントをUIに反映
+   */
+  _setupDesktopDetection() {
+    if (!window.electronAPI) return;
+
+    // アイドル検出: 操作なしで固まっている
+    window.electronAPI.onIdleAlert((data) => {
+      if (Timer.state !== 'running' && Timer.state !== 'overtime') return;
+
+      if (data.type === 'short') {
+        // 3分操作なし → やさしい通知
+        this.sendNotification('大丈夫？', data.message);
+      } else {
+        // 10分操作なし → 強い通知 + リカバリー画面
+        this.showRecovery(data.idleSec * 1000);
+      }
+    });
+
+    // アイドル復帰
+    window.electronAPI.onIdleResumed((data) => {
+      // リカバリー画面が出ていたら自動では閉じない（ボタンで閉じる）
+    });
+
+    // スクリーンロック解除
+    window.electronAPI.onScreenUnlocked((data) => {
+      if (Timer.state !== 'running' && Timer.state !== 'overtime') return;
+      this.showRecovery(data.awayMs);
+    });
+
+    // 気が散るアプリ検出
+    window.electronAPI.onDistractionDetected((data) => {
+      if (Timer.state !== 'running' && Timer.state !== 'overtime') return;
+
+      this._leaveCount++;
+
+      // 通知で気づかせる（ブロックではなく気づき）
+      this.sendNotification('🫧 集中モード中', data.message);
+
+      // 3回以上脱線したら短セッション提案
+      if (data.count >= 3 && !this._shortSessionSuggested) {
+        this._shortSessionSuggested = true;
+        this.sendNotification('提案', '脱線が増えてきたね。次は短いセッション（15分）を試してみよう');
+      }
+    });
+  },
+
+  _shortSessionSuggested: false,
+
   // Step 3: 注意散漫対策
   // ========================================
 

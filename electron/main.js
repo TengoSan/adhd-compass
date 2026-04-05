@@ -1,8 +1,10 @@
 const { app, BrowserWindow, Tray, Menu, globalShortcut, nativeImage, Notification, ipcMain } = require('electron');
 const path = require('path');
+const Detector = require('./detector');
 
 let mainWindow = null;
 let tray = null;
+let detector = null;
 
 /**
  * メインウィンドウを作成
@@ -135,11 +137,33 @@ ipcMain.on('show-notification', (event, { title, body }) => {
   new Notification({ title, body }).show();
 });
 
+// IPC: 検出エンジン制御
+ipcMain.on('detector-start', () => {
+  if (detector) detector.startMonitoring();
+});
+
+ipcMain.on('detector-stop', () => {
+  if (detector) detector.stopMonitoring();
+});
+
+ipcMain.handle('detector-get-behavior', () => {
+  if (detector) return detector.exportBehaviorData();
+  return null;
+});
+
+ipcMain.on('detector-update-distracting-apps', (event, apps) => {
+  if (detector) detector.updateDistractingApps(apps);
+});
+
 // アプリ初期化
 app.whenReady().then(() => {
   createWindow();
   createTray();
   registerShortcuts();
+
+  // 検出エンジン初期化
+  detector = new Detector(mainWindow);
+  detector.startLockMonitoring(); // ロック監視は常時
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -158,4 +182,5 @@ app.on('window-all-closed', () => {
 // アプリ終了時にショートカットを解除
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
+  if (detector) detector.stopMonitoring();
 });

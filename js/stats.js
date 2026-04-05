@@ -178,6 +178,25 @@ const Stats = {
       }
     }
 
+    // Electron: デスクトップ行動パターン分析
+    if (window.electronAPI) {
+      try {
+        window.electronAPI.getBehaviorData().then(data => {
+          if (data && data.analysis && data.analysis.hasEnoughData) {
+            data.analysis.insights.forEach(i => insights.push(i));
+          }
+          this._renderInsightText(el, insights);
+        });
+        return; // 非同期なのでここでreturn
+      } catch (e) {
+        // Electron APIエラーは無視
+      }
+    }
+
+    this._renderInsightText(el, insights);
+  },
+
+  _renderInsightText(el, insights) {
     if (insights.length === 0) {
       el.textContent = 'データが貯まると傾向が見えてくるよ。使い続けてみよう！';
     } else {
