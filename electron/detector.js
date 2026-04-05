@@ -3,6 +3,7 @@
  * Electronならではの過集中/注意散漫検出
  */
 const { powerMonitor } = require('electron');
+const { exec } = require('child_process');
 
 class Detector {
   constructor(mainWindow) {
@@ -188,7 +189,6 @@ class Detector {
    */
   _getActiveAppName() {
     return new Promise((resolve) => {
-      const { exec } = require('child_process');
       // macOS: AppleScriptでフロントアプリを取得
       exec(
         'osascript -e \'tell application "System Events" to get name of first application process whose frontmost is true\'',

@@ -6,28 +6,36 @@ let mainWindow = null;
 let tray = null;
 let detector = null;
 
+// アプリのルートパス（開発時とビルド時で異なる）
+function getAppRoot() {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, 'app')
+    : path.join(__dirname, '..');
+}
+
 /**
  * メインウィンドウを作成
  */
 function createWindow() {
+  const appRoot = getAppRoot();
+
   mainWindow = new BrowserWindow({
     width: 420,
     height: 740,
     minWidth: 360,
     minHeight: 600,
     backgroundColor: '#0d0d1a',
-    titleBarStyle: 'hiddenInset', // macOS: タイトルバーをコンテンツに統合
+    titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 12, y: 12 },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false
     },
-    show: false, // 読み込み完了まで非表示
-    icon: path.join(__dirname, '..', 'assets', 'icons', 'icon-192.svg')
+    show: false,
   });
 
-  mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
+  mainWindow.loadFile(path.join(appRoot, 'index.html'));
 
   // 読み込み完了後に表示（ちらつき防止）
   mainWindow.once('ready-to-show', () => {
