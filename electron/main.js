@@ -42,12 +42,17 @@ function createWindow() {
     mainWindow.show();
   });
 
-  // ウィンドウを閉じる時は非表示にする（Trayに常駐）
+  // ウィンドウの×ボタン → 非表示（Tray常駐）
+  // Cmd+Q / メニュー終了 → 完全終了
   mainWindow.on('close', (e) => {
-    if (!app.isQuitting) {
-      e.preventDefault();
-      mainWindow.hide();
+    if (app.isQuitting) {
+      // 完全終了: ウィンドウを破棄してアプリ終了
+      mainWindow = null;
+      return;
     }
+    // ×ボタン: 非表示にするだけ
+    e.preventDefault();
+    mainWindow.hide();
   });
 }
 
@@ -226,9 +231,12 @@ function createAppMenu() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-// 全ウィンドウが閉じてもアプリを終了しない（Tray常駐）
+// 全ウィンドウが閉じた時の処理
 app.on('window-all-closed', () => {
-  // macOSでは何もしない（Trayに常駐）
+  if (app.isQuitting) {
+    app.quit();
+  }
+  // Tray常駐中は何もしない
 });
 
 // アプリ終了時にショートカットを解除
