@@ -373,7 +373,10 @@ const Focus = {
    * OS通知を送る
    */
   sendNotification(title, body) {
-    if ('Notification' in window && Notification.permission === 'granted') {
+    // Electron環境ではネイティブ通知を使う
+    if (window.electronAPI) {
+      window.electronAPI.sendNotification(title, body);
+    } else if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(title, { body: body, icon: 'assets/icons/icon-192.png' });
     }
   },

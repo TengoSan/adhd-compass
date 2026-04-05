@@ -1,0 +1,32 @@
+{
+  "name": "adhd-compass",
+  "version": "1.0.0",
+  "description": "ADHDコンパス - ADHD支援デスクトップアプリ",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "author": "TengoSan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.tengosan.adhd-compass",
+    "productName": "ADHDコンパス",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/icons/icon.icns"
+    },
+    "files": [
+      "electron/**/*",
+      "index.html",
+      "css/**/*",
+      "js/**/*",
+      "assets/**/*",
+      "manifest.json"
+    ]
+  }
+}

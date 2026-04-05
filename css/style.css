@@ -89,6 +89,17 @@ body {
 .app-header {
   text-align: center;
   padding: 20px 0 8px;
+  /* Electron: タイトルバー領域をドラッグ可能に */
+  -webkit-app-region: drag;
+}
+
+/* Electron用: タイトルバー領域の余白 */
+body.electron .app-header {
+  padding-top: 36px;
+}
+
+body.electron .screen-header {
+  padding-top: 8px;
 }
 
 .app-title {

@@ -431,5 +431,9 @@ const App = {
 
 // アプリ起動
 document.addEventListener('DOMContentLoaded', () => {
+  // Electron環境の検出
+  if (window.electronAPI) {
+    document.body.classList.add('electron');
+  }
   App.init();
 });
