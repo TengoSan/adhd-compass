@@ -163,15 +163,21 @@ ipcMain.on('detector-update-distracting-apps', (event, apps) => {
   if (detector) detector.updateDistractingApps(apps);
 });
 
+// Cmd+Q で確実に終了するためのフラグ管理
+app.on('before-quit', () => {
+  app.isQuitting = true;
+});
+
 // アプリ初期化
 app.whenReady().then(() => {
   createWindow();
   createTray();
   registerShortcuts();
+  createAppMenu();
 
   // 検出エンジン初期化
   detector = new Detector(mainWindow);
-  detector.startLockMonitoring(); // ロック監視は常時
+  detector.startLockMonitoring();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -181,6 +187,44 @@ app.whenReady().then(() => {
     }
   });
 });
+
+/**
+ * アプリケーションメニュー（Cmd+Qを有効にする）
+ */
+function createAppMenu() {
+  const template = [
+    {
+      label: 'ADHDコンパス',
+      submenu: [
+        { label: 'ADHDコンパスについて', role: 'about' },
+        { type: 'separator' },
+        { label: 'ウィンドウを隠す', accelerator: 'CmdOrCtrl+H', click: () => mainWindow.hide() },
+        { type: 'separator' },
+        {
+          label: '終了',
+          accelerator: 'CmdOrCtrl+Q',
+          click: () => {
+            app.isQuitting = true;
+            app.quit();
+          }
+        }
+      ]
+    },
+    {
+      label: '編集',
+      submenu: [
+        { role: 'undo', label: '元に戻す' },
+        { role: 'redo', label: 'やり直す' },
+        { type: 'separator' },
+        { role: 'cut', label: 'カット' },
+        { role: 'copy', label: 'コピー' },
+        { role: 'paste', label: 'ペースト' },
+        { role: 'selectAll', label: 'すべてを選択' }
+      ]
+    }
+  ];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
 
 // 全ウィンドウが閉じてもアプリを終了しない（Tray常駐）
 app.on('window-all-closed', () => {
